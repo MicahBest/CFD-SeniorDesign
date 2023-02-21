@@ -19,3 +19,9 @@ To pull recent commits and update the scripts, use the following command:
 ```
 git pull
 ```
+
+## Running the python script to convert 2D airfoil data from dat to csv
+Set the filename in the bottom of the script then run the following command from the base directory of the repository in Ubuntu:
+```
+python3 scripts/2D_airfoil_dat_to_csv.py
+```
