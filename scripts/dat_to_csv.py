@@ -1,12 +1,14 @@
+import os
 import csv
 import pandas as pd
 
-def convert_2D_airfoil_dat_to_csv(filename):
+def dat_to_csv(filename, chord_length):
     """
     This function converts dat information into csv format for use in CFD modeling.
     
     Args:
         - filename : str, name of the file to be converted
+        - chord_length : chord_length of the airfoil in any desired units
     """
     
     if filename[-4:] == ".dat":
@@ -27,16 +29,15 @@ def convert_2D_airfoil_dat_to_csv(filename):
     
     idxmax = dataframe['x'].idxmax()
     
+    os.remove(filename + ".csv")
+    
     # reorder coordinates for continuity
     with open(filename + ".csv", "w") as f:
         writer = csv.writer(f)
         for i in range(len(dataframe)):
             if i <= idxmax:
-                writer.writerow(list(dataframe.loc[i]))
+                row = list(dataframe.loc[i])
             else:
-                writer.writerow(list(dataframe.loc[len(dataframe) - i + idxmax]))
-    
-
-if __name__ == "__main__":
-    convert_2D_airfoil_dat_to_csv(filename="Airfoils/n0012")
+                row = list(dataframe.loc[len(dataframe) - i + idxmax])
+            writer.writerow([point * chord_length for point in row])
     
